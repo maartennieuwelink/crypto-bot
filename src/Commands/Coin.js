@@ -1,10 +1,9 @@
-const { MessageEmbed } = require('discord.js');
 const Command = require('../Structures/Command');
 const CoinGecko = require('coingecko-api');
 const CoinGeckoClient = new CoinGecko();
 const Discord = require('discord.js');
 
-async function getCoin(coin) {
+async function getCoin$(coin) {
     return await CoinGeckoClient.coins.fetch(coin, {});
 }
 
@@ -12,43 +11,84 @@ function getCircle(int) {
     return int > 0 ? ':green_circle:' : ':red_circle:'
 }
 
+function getCurrency(currency, symbol) {
+    const options = ['eur', 'btc', 'usd', 'eth'];
+
+    if (symbol) {
+        switch (currency) {
+            case 'eur':
+                return '€';
+            case 'usd':
+                return '$';
+            case 'btc':
+                return '₿';
+            case 'eth':
+                return '♦';
+            default:
+                return options.includes(currency) ? currency.toUpperCase() : '€';
+        }
+
+    } else {
+        return options.includes(currency) ? currency : 'eur';
+    }
+}
+
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
             aliases: ['coin'],
-            description: 'Displays all the commands in the bot',
+            description: 'Displays data for the selected coin',
             category: 'Utilities',
             usage: '[command]'
         });
     }
 
-    async run(message, [command]) {
-        const coin = await getCoin(command);
+    async run(message, [coin, currency]) {
+        const coinData = await getCoin$(coin);
 
-        if (!coin.success) {
-            return message.channel.send(coin.data['error']);
+        if (!coinData.success) {
+            return message.channel.send(coinData.data['error']);
         }
 
-        console.log(coin.image);
+        if (currency) {
+            currency = currency.toLowerCase();
+        }
+
         const embedCoinData = new Discord.MessageEmbed()
             .setColor('RANDOM')
-            .setTitle(coin.data['name'])
-            .setThumbnail(coin.data.image['thumb'])
+            .setTitle(coinData.data['name'])
+            .setThumbnail(coinData.data.image['thumb'])
             .setTimestamp(new Date());
 
-        console.log(coin.data.market_data['current_price']);
         const fields = [
-            {name: 'Current price', value: `€ ${coin.data.market_data['current_price']['eur']}`, inline: true},
             {
-                name: 'Last hour',
-                value: `${getCircle(coin.data.market_data['price_change_percentage_1h_in_currency']['eur'])} ${coin.data.market_data['price_change_percentage_1h_in_currency']['eur']}%`,
+                name: 'Current price',
+                value: `${getCurrency(currency, true)} ${coinData.data.market_data['current_price'][getCurrency(currency)].toFixed(4)}`,
                 inline: true
             },
-            {name: 'Last day', value: `${getCircle(coin.data.market_data['price_change_percentage_24h_in_currency']['eur'])} ${coin.data.market_data['price_change_percentage_24h_in_currency']['eur']}%`, inline: true},
-            {name: 'Last 7 days', value: `${getCircle(coin.data.market_data['price_change_percentage_7d_in_currency']['eur'])} ${coin.data.market_data['price_change_percentage_7d_in_currency']['eur']}%`, inline: true},
-            {name: 'ATH', value: `€ ${coin.data.market_data['ath']['eur']}`, inline: true},
-            {name: 'ATL', value: `€ ${coin.data.market_data['atl']['eur']}`, inline: true},
+            {
+                name: 'Last hour',
+                value: `${getCircle(coinData.data.market_data['price_change_percentage_1h_in_currency'][getCurrency(currency)])} ${coinData.data.market_data['price_change_percentage_1h_in_currency'][getCurrency(currency)].toFixed(2)}%`,
+                inline: true
+            },
+            {
+                name: 'Last day',
+                value: `${getCircle(coinData.data.market_data['price_change_percentage_24h_in_currency'][getCurrency(currency)])} ${coinData.data.market_data['price_change_percentage_24h_in_currency'][getCurrency(currency)].toFixed(2)}%`,
+                inline: true
+            },
+            {
+                name: 'Last 7 days', value: `${getCircle(coinData.data.market_data['price_change_percentage_7d_in_currency'][getCurrency(currency)])} ${coinData.data.market_data['price_change_percentage_7d_in_currency'][getCurrency(currency)].toFixed(2)}%`, inline: true},
+            {
+                name: 'ATH',
+                value: `${getCurrency(currency, true)} ${coinData.data.market_data['ath'][getCurrency(currency)]}`,
+                inline: true
+            },
+            {
+                name: 'ATL',
+                value: `${getCurrency(currency, true)} ${coinData.data.market_data['atl'][getCurrency(currency)]}`,
+                inline: true
+            },
         ];
 
         fields.forEach((field, index) => {
