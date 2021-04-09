@@ -29,7 +29,7 @@ function getCurrency(currency, symbol) {
         }
 
     } else {
-        return options.includes(currency) ? currency : 'eur';
+        return options.includes(currency) ? currency.toFixed(currency > 0 ? 2 : 6) : 'eur';
     }
 }
 
@@ -48,7 +48,7 @@ module.exports = class extends Command {
         const coinData = await getCoin$(coin);
 
         if (!coinData.success) {
-            return message.channel.send(coinData.data['error']);
+            return message.channel.send(`Could not find coin with gived id \`${coin}\``);
         }
 
         if (currency) {
@@ -64,12 +64,17 @@ module.exports = class extends Command {
         const fields = [
             {
                 name: 'Current price',
-                value: `${getCurrency(currency, true)} ${coinData.data.market_data['current_price'][getCurrency(currency)].toFixed(6)}`,
+                value: `${getCurrency(currency, true)} ${coinData.data.market_data['current_price'][getCurrency(currency)]}`,
                 inline: true
             },
             {
                 name: 'Last hour',
                 value: `${getCircle(coinData.data.market_data['price_change_percentage_1h_in_currency'][getCurrency(currency)])} ${coinData.data.market_data['price_change_percentage_1h_in_currency'][getCurrency(currency)].toFixed(2)}%`,
+                inline: true
+            },
+            {
+                name: '\b',
+                value: '\b',
                 inline: true
             },
             {
@@ -83,22 +88,28 @@ module.exports = class extends Command {
                 inline: true
             },
             {
+                name: '\b',
+                value: '\b',
+                inline: true
+            },
+            {
                 name: 'ATH',
-                value: `${getCurrency(currency, true)} ${coinData.data.market_data['ath'][getCurrency(currency)].toFixed(6)}`,
+                value: `${getCurrency(currency, true)} ${coinData.data.market_data['ath'][getCurrency(currency)]}`,
                 inline: true
             },
             {
                 name: 'ATL',
-                value: `${getCurrency(currency, true)} ${coinData.data.market_data['atl'][getCurrency(currency)].toFixed(6)}`,
+                value: `${getCurrency(currency, true)} ${coinData.data.market_data['atl'][getCurrency(currency)]}`,
+                inline: true
+            },
+            {
+                name: '\b',
+                value: '\b',
                 inline: true
             },
         ];
 
-        fields.forEach((field, index) => {
-            if (index === 2 || index === 4) {
-                embedMsg.addField("** **", "** **");
-            }
-
+        fields.forEach((field) => {
             embedMsg.addField(field.name, field.value, field.inline);
         });
 

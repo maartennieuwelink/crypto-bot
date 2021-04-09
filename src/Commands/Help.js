@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
-			aliases: ['help'],
+			aliases: ['commands'],
 			description: 'Display all commands',
 			category: 'Utilities'
 		});

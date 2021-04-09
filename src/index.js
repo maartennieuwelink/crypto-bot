@@ -12,5 +12,5 @@ client.start();
 client.on('ready', () => {
     client
         .login()
-        .then(client.user.setActivity('!help', { type: 'LISTENING' }));
+        .then(client.user.setActivity('!commands', { type: 'LISTENING' }));
 });
