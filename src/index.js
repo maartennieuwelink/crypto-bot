@@ -7,3 +7,10 @@ const config = require('../config.json');
 const client = new MDClient(config);
 // login to the websocket, load the events and commands.
 client.start();
+
+// Set bot status
+client.on('ready', () => {
+    client
+        .login()
+        .then(client.user.setActivity('!help', { type: 'LISTENING' }));
+});
