@@ -55,7 +55,7 @@ module.exports = class extends Command {
             currency = currency.toLowerCase();
         }
 
-        const embedCoinData = new Discord.MessageEmbed()
+        const embedMsg = new Discord.MessageEmbed()
             .setColor('RANDOM')
             .setTitle(coinData.data['name'])
             .setThumbnail(coinData.data.image['thumb'])
@@ -64,7 +64,7 @@ module.exports = class extends Command {
         const fields = [
             {
                 name: 'Current price',
-                value: `${getCurrency(currency, true)} ${coinData.data.market_data['current_price'][getCurrency(currency)].toFixed(4)}`,
+                value: `${getCurrency(currency, true)} ${coinData.data.market_data['current_price'][getCurrency(currency)].toFixed(6)}`,
                 inline: true
             },
             {
@@ -78,28 +78,31 @@ module.exports = class extends Command {
                 inline: true
             },
             {
-                name: 'Last 7 days', value: `${getCircle(coinData.data.market_data['price_change_percentage_7d_in_currency'][getCurrency(currency)])} ${coinData.data.market_data['price_change_percentage_7d_in_currency'][getCurrency(currency)].toFixed(2)}%`, inline: true},
+                name: 'Last 7 days',
+                value: `${getCircle(coinData.data.market_data['price_change_percentage_7d_in_currency'][getCurrency(currency)])} ${coinData.data.market_data['price_change_percentage_7d_in_currency'][getCurrency(currency)].toFixed(2)}%`,
+                inline: true
+            },
             {
                 name: 'ATH',
-                value: `${getCurrency(currency, true)} ${coinData.data.market_data['ath'][getCurrency(currency)]}`,
+                value: `${getCurrency(currency, true)} ${coinData.data.market_data['ath'][getCurrency(currency)].toFixed(6)}`,
                 inline: true
             },
             {
                 name: 'ATL',
-                value: `${getCurrency(currency, true)} ${coinData.data.market_data['atl'][getCurrency(currency)]}`,
+                value: `${getCurrency(currency, true)} ${coinData.data.market_data['atl'][getCurrency(currency)].toFixed(6)}`,
                 inline: true
             },
         ];
 
         fields.forEach((field, index) => {
             if (index === 2 || index === 4) {
-                embedCoinData.addField("** **", "** **");
+                embedMsg.addField("** **", "** **");
             }
 
-            embedCoinData.addField(field.name, field.value, field.inline);
+            embedMsg.addField(field.name, field.value, field.inline);
         });
 
-        return message.channel.send(embedCoinData);
+        return message.channel.send(embedMsg);
     }
 
 };
