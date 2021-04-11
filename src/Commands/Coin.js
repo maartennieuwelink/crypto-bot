@@ -48,7 +48,7 @@ module.exports = class extends Command {
         const coinData = await getCoin$(coin);
 
         if (!coinData.success) {
-            return message.channel.send(`Could not find coin with gived id \`${coin}\``);
+            return message.channel.send(`Could not find coin with given id \`${coin}\``);
         }
 
         if (currency) {

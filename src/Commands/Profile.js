@@ -22,7 +22,7 @@ function getUserProfileCard(user, coins, message) {
 		for (let coin of coins) {
 			i++;
 
-			display += `${i}. ${coin['coin_name']}\n`;
+			display += `${i}. ${coin['coin_name']} (${coin['coin_id']})\n`;
 		}
 	}
 
