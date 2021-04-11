@@ -10,6 +10,7 @@ async function getTrendingCoin$() {
 module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
+			prefix: '!c',
 			aliases: ['trending'],
 			description: 'Display trending coins',
 			category: 'Utilities'

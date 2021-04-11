@@ -37,10 +37,10 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
+            prefix: '!c',
             aliases: ['coin'],
             description: 'Displays data for the selected coin',
             category: 'Utilities',
-            usage: '[command]'
         });
     }
 

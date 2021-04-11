@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
+			prefix: '!c',
 			aliases: ['commands'],
 			description: 'Display all commands',
 			category: 'Utilities'
@@ -19,17 +20,17 @@ module.exports = class extends Command {
 
 		const fields = [
 			{
-				name: '!ping',
+				name: '!c ping',
 				value: `Return the bot latency and CoinGecko API status.`,
 				inline: true
 			},
 			{
-				name: '!trending',
+				name: '!c trending',
 				value: `Return the top-7 trending coins on CoinGecko as searched by users in the last 24 hours.`,
 				inline: true
 			},
 			{
-				name: `!coin \`id\` \`currency\``,
+				name: `!c coin \`id\` \`currency\``,
 				value: `Return data from the selected coin. Prices will be returned in EUR by default if currency is missing.`,
 				inline: true
 			},

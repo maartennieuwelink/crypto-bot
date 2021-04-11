@@ -5,6 +5,7 @@ const CoinGeckoClient = new CoinGecko();
 module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
+			prefix: '!c',
 			aliases: ['pong'],
 			description: 'This provides the ping of the bot',
 			category: 'Utilities'
