@@ -52,7 +52,7 @@ module.exports = class extends Command {
 				}
 			}
 
-			db.run("INSERT INTO user_coin (user_id, coin_name, coin_id) VALUES (?, ?, ?)", [coinToFollow['user_id'], coinToFollow['coin_name'], coinToFollow['coin_id']]).then((result) => {
+			db.run("INSERT INTO user_coin (user_id, coin_alert, coin_name, coin_id) VALUES (?, ?, ?, ?)", [coinToFollow['user_id'], 0, coinToFollow['coin_name'], coinToFollow['coin_id']]).then((result) => {
 				return message.channel.send(`Now following ${coinToFollow['coin_name']}`);
 			});
 		} else {

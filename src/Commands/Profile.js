@@ -22,7 +22,7 @@ function getUserProfileCard(user, coins, message) {
 		for (let coin of coins) {
 			i++;
 
-			display += `${i}. ${coin['coin_name']} (${coin['coin_id']})\n`;
+			display += `${i}. ${coin['coin_name']} (${coin['coin_id']}) ${coin['coin_alert'] ? ':rotating_light:' : ''}\n`;
 		}
 	}
 
@@ -75,6 +75,7 @@ module.exports = class extends Command {
 		} else {
 			const userCoins = await db.all(`SELECT * FROM user_coin where user_id = ${message.author.id.toString()}`);
 
+			console.log(userCoins);
 			return message.channel.send(getUserProfileCard(user, userCoins, message));
 		}
 	}
