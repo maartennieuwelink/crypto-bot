@@ -4,7 +4,9 @@
 /dist
 /tmp
 /out-tsc
+
 config.json
+database.sqlite
 
 # dependencies
 /node_modules

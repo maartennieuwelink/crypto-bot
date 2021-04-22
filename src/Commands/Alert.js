@@ -33,7 +33,7 @@ module.exports = class extends Command {
         }
 
         const db = await sql.open({
-            filename: '/tmp/database.db',
+            filename: 'database.sqlite',
             driver: sqlite3.Database
         });
 
@@ -50,7 +50,7 @@ module.exports = class extends Command {
 
             const stateBool = state === 'on' ? 1 : 0;
 
-            if (selectedCoin['coin_alert'] === stateBool) {
+            if (selectedCoin['coin_alert']) {
                 return message.channel.send(stateBool ? `Alerts for ${selectedCoin['coin_name']} are already turned on.` : `Alerts for ${selectedCoin['coin_name']} are already turned off.`);
             }
 

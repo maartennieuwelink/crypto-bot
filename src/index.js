@@ -10,10 +10,3 @@ const sqlite3 = require("sqlite3");
 
 // login to the websocket, load the events and commands.
 client.start();
-
-// Set bot status
-// client.on('ready', () => {
-//     client
-//         .login()
-//         .then(client.user.setActivity('!c commands', { type: 'LISTENING' }));
-// });

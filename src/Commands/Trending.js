@@ -20,6 +20,7 @@ module.exports = class extends Command {
 	async run(message) {
 		const coinData = await getTrendingCoin$();
 
+		console.log(coinData);
 		const embedMsg = new Discord.MessageEmbed()
 			.setColor('RANDOM')
 			.setDescription('Top-7 trending coins on CoinGecko as searched by users in the last 24 hours')

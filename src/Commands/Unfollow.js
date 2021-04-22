@@ -20,7 +20,7 @@ module.exports = class extends Command {
 		}
 
 		const db = await sql.open({
-			filename: '/tmp/database.db',
+			filename: 'database.sqlite',
 			driver: sqlite3.Database
 		});
 
